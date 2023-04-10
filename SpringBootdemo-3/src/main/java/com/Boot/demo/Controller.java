@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,9 +22,20 @@ public class Controller {
 	private Repository repository;
 	
 	@GetMapping("/get/{id}")
-	public Optional<bikedetails> geti(@PathVariable int id){
-		return repository.findById(id);
+	public List<bikedetails> geti(@PathVariable int id){
+		return repository.findByIdLessThan(id);
 	}
+	
+	@GetMapping("/get//{cost}")
+	public Optional<bikedetails> getc(@PathVariable long cost){
+		return repository.findByCost(cost);
+	}
+	@GetMapping("/get/{id}/{cost}")
+	
+	public Optional<bikedetails> getip(@PathVariable int id,@PathVariable long cost){
+		return repository.findByIdOrCost(id, cost);
+	}
+	
 	
 	@GetMapping("/getall")
 	public List<bikedetails> get(){
